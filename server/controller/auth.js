@@ -52,9 +52,8 @@ const signInController = async (req, res) => {
   user.password = undefined;
 
   res.status(StatusCodes.OK).json({
-    user,
+    name: user.name,
     token,
-    location: user.location,
   });
 };
 
