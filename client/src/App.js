@@ -3,6 +3,7 @@ import Home from "./components/Home";
 import Protected from "./components/Protected";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
+import Chat from "./components/Chat";
 
 function App() {
   return (
