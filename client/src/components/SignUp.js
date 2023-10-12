@@ -9,7 +9,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { name, registerUser } = useAppContext();
+  const { name, registerUser, error } = useAppContext();
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -54,22 +54,31 @@ const SignUp = () => {
                 className="bg-transparent border-b-2 border-[#777777] md:w-96 placeholder:text-[#777777] pb-2 outline-none text-sm"
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <input
-                type="Password"
-                placeholder="Password"
-                className="bg-transparent border-b-2 border-[#777777] md:w-96 placeholder:text-[#777777] pb-2 outline-none mb-3 text-sm"
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <div className="mb-3">
+                <input
+                  type="Password"
+                  placeholder="Password"
+                  className="bg-transparent border-b-2 border-[#777777] md:w-96 placeholder:text-[#777777] pb-2 outline-none mb-1 text-sm"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <p className="text-xs text-[#777]">
+                  {password.length < 6 && "Minimum 6 characters"}
+                </p>
+              </div>
               <p className="text-[#777777] text-sm">
                 Already have an account?{" "}
                 <Link to="/sign-in" className="text-white">
                   Sign In
                 </Link>
               </p>
+              <p className="text-sm text-red-400">{error && error}</p>
               <div className="mt-14">
                 <button
-                  className="bg-[#4553FE] px-10 py-2 text-sm"
+                  className={`bg-[#4553FE] px-10 py-2 text-sm ${
+                    !fname || !email || !password ? "cursor-not-allowed" : ""
+                  }`}
                   onClick={handleClick}
+                  disabled={!fname && !email && !password}
                 >
                   Sign up
                 </button>

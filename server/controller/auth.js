@@ -13,7 +13,7 @@ const signUpController = async (req, res, next) => {
   const userAlreadyExist = await User.findOne({ email });
 
   if (userAlreadyExist) {
-    throw new BadRequestError("Email already in use");
+    throw new BadRequestError("Email already registered");
   }
 
   const user = await User.create(req.body);

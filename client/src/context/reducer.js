@@ -6,6 +6,7 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
+  CLEAR_ALERT,
 } from "./actions";
 import { initialState } from "./appContext";
 
@@ -25,6 +26,7 @@ const reducer = (state, action) => {
   if (action.type === REGISTER_USER_ERROR) {
     return {
       ...state,
+      error: action.payload,
     };
   }
 
@@ -43,6 +45,7 @@ const reducer = (state, action) => {
   if (action.type === LOGIN_USER_ERROR) {
     return {
       ...state,
+      error: action.payload,
     };
   }
 
@@ -51,6 +54,13 @@ const reducer = (state, action) => {
       ...initialState,
       name: null,
       token: null,
+    };
+  }
+
+  if (action.type === CLEAR_ALERT) {
+    return {
+      ...state,
+      error: "",
     };
   }
 

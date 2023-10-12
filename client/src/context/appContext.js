@@ -9,6 +9,7 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
+  CLEAR_ALERT,
 } from "./actions.js";
 
 const token = localStorage.getItem("token");
@@ -17,43 +18,13 @@ const name = localStorage.getItem("name");
 const initialState = {
   name: name ? name : null,
   token: token,
+  error: "",
 };
 
 const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  // custom instances && interceptors
-  // const authFetch = axios.create({
-  //   baseURL: "/api/v1",
-  // });
-
-  // REQUEST
-
-  // authFetch.interceptors.request.use(
-  //   (config) => {
-  //     config.headers["Authorization"] = `Bearer ${state.token}`;
-  //     return config;
-  //   },
-  //   (error) => {
-  //     return Promise.reject(error);
-  //   }
-  // );
-
-  // // RESPONSE
-
-  // authFetch.interceptors.response.use(
-  //   (response) => {
-  //     return response;
-  //   },
-  //   (error) => {
-  //     if (error.response.status === 401) {
-  //       logoutUser();
-  //     }
-  //     return Promise.reject(error);
-  //   }
-  // );
 
   const addUserToLocalStorage = ({ name, token }) => {
     localStorage.setItem("name", JSON.stringify(name));
@@ -65,6 +36,12 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem("token");
   };
 
+  const clearAlert = () => {
+    setTimeout(() => {
+      dispatch({ type: CLEAR_ALERT });
+    }, 3000);
+  };
+
   const registerUser = async (currentUser) => {
     dispatch({ type: REGISTER_USER_BEGIN });
     try {
@@ -72,7 +49,6 @@ const AppProvider = ({ children }) => {
         "http://localhost:3001/api/v1/sign-up",
         currentUser
       );
-      console.log({ response });
       const { name, token } = response.data;
       dispatch({
         type: REGISTER_USER_SUCCESS,
@@ -80,11 +56,12 @@ const AppProvider = ({ children }) => {
       });
       addUserToLocalStorage({ name, token });
     } catch (err) {
-      // console.log(err);
       dispatch({
         type: REGISTER_USER_ERROR,
+        payload: err.response.data.msg,
       });
     }
+    clearAlert();
   };
 
   const loginUser = async (currentUser) => {
@@ -103,8 +80,10 @@ const AppProvider = ({ children }) => {
     } catch (err) {
       dispatch({
         type: LOGIN_USER_ERROR,
+        payload: err.response.data.msg,
       });
     }
+    clearAlert();
   };
 
   const logoutUser = () => {
