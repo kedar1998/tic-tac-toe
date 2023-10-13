@@ -28,6 +28,9 @@ const io = new Server(server, {
   },
 });
 
+// All Players
+let allPlayers = [];
+
 // Handle socket.io connections and events
 io.on("connection", (socket) => {
   socket.on("Join_room", (data) => {
@@ -38,9 +41,10 @@ io.on("connection", (socket) => {
     // Check the number of players in the room.
     const clients = io.sockets.adapter.rooms.get(data);
     console.log(clients);
+    allPlayers.push(socket.id);
     if (clients && clients.size === 2) {
       // Start the game when two players have joined.
-      io.to(data).emit("game_start");
+      io.to(data).emit("game_start", allPlayers);
     }
   });
 
@@ -48,11 +52,11 @@ io.on("connection", (socket) => {
     // Send game data to other players in the room
     socket.to(data.room).emit("receive_data", {
       board: data.board,
-      currentPlayer: data.currentPlayer,
     });
   });
 
   socket.on("disconnect", () => {
+    allPlayers = [];
     console.log("User disconnected");
   });
 });

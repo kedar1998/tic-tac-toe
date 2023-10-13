@@ -22,6 +22,9 @@ const Home = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [player1, setPlayer1] = useState(null);
+  const [player2, setPlayer2] = useState(null);
+
   // Function to join a room
   function joinRoom() {
     if (room !== "") {
@@ -68,7 +71,7 @@ const Home = () => {
 
         setTimeout(() => {
           navigate(0);
-        }, 8000);
+        }, 10000);
       }
     });
   };
@@ -82,9 +85,11 @@ const Home = () => {
 
   useEffect(() => {
     // Listen for the game start event
-    socket.on("game_start", () => {
+    socket.on("game_start", (data) => {
       setGameStarted(true);
       setLoading(false);
+      setPlayer1(data[0]);
+      setPlayer2(data[1]);
     });
   }, []);
 
@@ -112,6 +117,10 @@ const Home = () => {
       restartGame();
     }
   }, [winner]);
+
+  console.log({ client: socket.id });
+  console.log({ player1 });
+  console.log({ player2 });
 
   return (
     <div className="bg-[#181818] h-screen text-white">
@@ -174,24 +183,102 @@ const Home = () => {
 
       {showUI && gameStarted && (
         <div>
-          <p className="text-center">{player}'s turn</p>
+          <p className="text-center">
+            {player === "X" && player1 === socket.id
+              ? "Your Turn"
+              : player === "O" && player2 === socket.id
+              ? "Your Turn"
+              : "Opponents Turn"}
+          </p>
           <div className="mt-8 flex justify-center items-center">
             {/* Board */}
             <div>
               <div className="flex justify-between items-center">
-                <Square value={board[0]} chooseSquare={() => chooseSquare(0)} />
-                <Square value={board[1]} chooseSquare={() => chooseSquare(1)} />
-                <Square value={board[2]} chooseSquare={() => chooseSquare(2)} />
+                <Square
+                  value={board[0]}
+                  chooseSquare={() => chooseSquare(0)}
+                  name={name.replaceAll('"', "")}
+                  player={player}
+                  player1={player1}
+                  player2={player2}
+                  socketId={socket.id}
+                />
+                <Square
+                  value={board[1]}
+                  chooseSquare={() => chooseSquare(1)}
+                  name={name.replaceAll('"', "")}
+                  player={player}
+                  player1={player1}
+                  player2={player2}
+                  socketId={socket.id}
+                />
+                <Square
+                  value={board[2]}
+                  chooseSquare={() => chooseSquare(2)}
+                  name={name.replaceAll('"', "")}
+                  player={player}
+                  player1={player1}
+                  player2={player2}
+                  socketId={socket.id}
+                />
               </div>
               <div className="flex justify-between items-center">
-                <Square value={board[3]} chooseSquare={() => chooseSquare(3)} />
-                <Square value={board[4]} chooseSquare={() => chooseSquare(4)} />
-                <Square value={board[5]} chooseSquare={() => chooseSquare(5)} />
+                <Square
+                  value={board[3]}
+                  chooseSquare={() => chooseSquare(3)}
+                  name={name.replaceAll('"', "")}
+                  player={player}
+                  player1={player1}
+                  player2={player2}
+                  socketId={socket.id}
+                />
+                <Square
+                  value={board[4]}
+                  chooseSquare={() => chooseSquare(4)}
+                  name={name.replaceAll('"', "")}
+                  player={player}
+                  player1={player1}
+                  player2={player2}
+                  socketId={socket.id}
+                />
+                <Square
+                  value={board[5]}
+                  chooseSquare={() => chooseSquare(5)}
+                  name={name.replaceAll('"', "")}
+                  player={player}
+                  player1={player1}
+                  player2={player2}
+                  socketId={socket.id}
+                />
               </div>
               <div className="flex justify-between items-center">
-                <Square value={board[6]} chooseSquare={() => chooseSquare(6)} />
-                <Square value={board[7]} chooseSquare={() => chooseSquare(7)} />
-                <Square value={board[8]} chooseSquare={() => chooseSquare(8)} />
+                <Square
+                  value={board[6]}
+                  chooseSquare={() => chooseSquare(6)}
+                  name={name.replaceAll('"', "")}
+                  player={player}
+                  player1={player1}
+                  player2={player2}
+                  socketId={socket.id}
+                />
+                <Square
+                  value={board[7]}
+                  chooseSquare={() => chooseSquare(7)}
+                  name={name.replaceAll('"', "")}
+                  player={player}
+                  player1={player1}
+                  player2={player2}
+                  socketId={socket.id}
+                />
+                <Square
+                  value={board[8]}
+                  chooseSquare={() => chooseSquare(8)}
+                  name={name.replaceAll('"', "")}
+                  player={player}
+                  player1={player1}
+                  player2={player2}
+                  socketId={socket.id}
+                />
               </div>
             </div>
           </div>
@@ -225,15 +312,17 @@ const Home = () => {
                   ? `${winner.winner} has won the game!!!`
                   : `Oops!!! It's a draw.`}
               </h2>
-              <button
-                className="bg-[#4553FE] px-10 py-2 text-sm mt-8"
-                onClick={() => {
-                  setShowPopup(false);
-                  navigate(0);
-                }}
-              >
-                Close
-              </button>
+              <div>
+                <button
+                  className="bg-[#4553FE] px-10 py-2 text-sm mt-8"
+                  onClick={() => {
+                    setShowPopup(false);
+                    navigate(0);
+                  }}
+                >
+                  Leave Room
+                </button>
+              </div>
             </div>
           </div>
         </div>
