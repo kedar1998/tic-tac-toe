@@ -9,6 +9,12 @@ import { Server } from "socket.io";
 import connect from "./db/connect.js"; // Database Connection
 import ErrorHandlerMiddleware from "./errors/error-handler.js";
 
+// ------------- DEPLOYMENT  ----------------------------
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import path from "path";
+// -----------------------------------------------------
+
 // Initialize Express app
 dotenv.config();
 const app = express();
@@ -61,8 +67,19 @@ io.on("connection", (socket) => {
   });
 });
 
+// --------------------  DEPLOYMENT   ----------------------------
+const __dirname = dirname(fileURLToPath(import.meta.url));
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+// ------------------------------------------------------------
+
 // Define API routes
 app.use("/api/v1", auth);
+
+// -----------------------  DEPLOYMENT   -=-------------------
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./client/build/index.html"));
+});
+// ----------------------------------------------------------
 
 app.use(ErrorHandlerMiddleware);
 
