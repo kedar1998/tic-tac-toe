@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="showcase.png" alt="Tic Tac Toe Logo" width="200" />
+  <img src="showcase.png" alt="Tic Tac Toe Logo" width="600" />
 </p>
 
 # Real-Time Multiplayer Tic Tac Toe Game
@@ -25,7 +25,7 @@ Tic Tac Toe, also known as "X and O" or "Noughts and Crosses," is one of the mos
 ## Architecture
 
 <p align="center">
-  <img src="architecture.png" alt="Tic Tac Toe Logo" width="200" />
+  <img src="architecture.png" alt="Tic Tac Toe Logo" width="600" />
 </p>
 
 The architecture of this Tic-Tac-Toe game and MERN stack application is designed to provide a real-time, interactive, and secure gaming experience to users, with separate client and server components working in harmony. The React frontend provides the user interface and interacts with the Node.js/Express.js backend, while Socket.IO facilitates real-time communication, making the game engaging and dynamic. Security, performance, and error handling are also essential considerations in building a robust application architecture.
