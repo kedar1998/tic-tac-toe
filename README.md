@@ -2,7 +2,12 @@
   <img src="showcase.png" alt="Tic Tac Toe Logo" width="600" />
 </p>
 
+
+
+
 # Real-Time Multiplayer Tic Tac Toe Game
+
+https://github.com/kedar1998/tic-tac-toe/assets/103363619/64571016-469e-4508-bdb3-40e4470b5b77
 
 **Welcome to the world of fun real-time gaming with our Tic Tac Toe app!** This interactive full-stack MERN (MongoDB, Express, React, Node.js) and Socket.io application brings the timeless game of Tic Tac Toe to life like never before.
 
